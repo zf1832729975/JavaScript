@@ -1,0 +1,191 @@
+	<!-- t-y catch es5.0 DOM的基本操作-->
+	<!-- 日期：-2018-8-13 -->
+	<!-- 常用编译器 vsc webstrom -->
+	<!-- package control
+	install package
+	emmet
+	Japrettify  排列js代码 -->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>第6课</title>
+</head>
+<body>
+try  catch
+<script type="text/javascript">
+	
+	try{//扑住错误、当这里面发生错误时，
+		//从错误处开始，try里的后续代码将不会被执行，而try{}之后的代码可以正常运行
+
+	}catch(e){ //error error.message error.name --> error
+		//如果try{}里的发生错误才会执行这里面的代码
+		document.write(e.name + " : " + e.message);
+	}
+
+Error.name的六种值对应信息
+	1.EvalError : eval()的使用与定义不一致
+	2.RangerError：数值越界
+	3.ReferenceError : 非法或不能识别的引用数值（未声明就引用）
+	4.SyntaxError : 发生语法解析错误（通篇扫描的时候）
+	5.TypeError: 操作数类型错误
+	6.URLError : URL处理函数使用不当
+</script>
+ES5.0严格模式
+<script type="text/javascript">
+	//es3.0和es5.0产生冲突的部分
+	//es5.0严格模式 那么es3.0和es5.0产生冲突的部分就是通es5.0,否则会用es3.0 	
+
+
+	"use strict"; /*es5.0严格摸式启动，必须在逻辑的最前面写，strict：严格*/
+	两种用法：
+		全局严格模式
+		局部函数内严格模式（推荐）
+	不支持 ： with(), arguments.callee, func.caller,
+	变量赋值前必须声明，局部this必须被赋值
+	（Person.call(null/undefined)赋值什么就是什么），
+	拒绝重复属性和参数
+
+
+
+with() : 改变作用域链，可以让它的参数的作用域链在最顶端,
+把参数里的对象放在作用链的最顶端  效率不好
+	var obj = {
+		name : "obj"
+	}
+	var name = "window";
+	function test() {
+		var name = "scope";
+		with(obj){
+			console.log(name); ==> "obj"
+		}
+	}
+	test();   => "obj"
+
+	简化代码 , 
+	document.write('a'); => 
+	=> with(document) {
+		write('a');
+	}
+
+eval(): 把字符串当做代码使，eval('console.log(a)') => console.log(a);
+</script>
+<!-- DOM   -> Document Object Model
+		DOM改变不了css -->
+<script type="text/javascript">
+	document.getElementsByTagName('div')[0];
+	//所有的div都被选中，加个索引为表示第几个选中
+	var div = document.getElementsByTagName('div')[0];
+	div.style.width = "100px";
+	// 样式列表
+	// 		鼠标点击
+	 div.onclick = function() {
+		if(div.style.backgroundColor == "red"){
+			div.style.backgroundColor = "green";
+		}else{
+			div.style.backgroundColor = "red";
+		}
+	}
+
+	//多少时间， 执行一次
+		setInterval(function(){
+		div.style.left = parseInt(div.style.left) + speed + "px";
+		div.style.top = parseInt(div.style.top) + speed + "px";
+	},50);
+
+</script>
+		
+DOM的基本操作 文件对象模型（DocumentObjectModel，简称DOM
+   documents 代表的是整个标签，html代表根标签
+<script type="text/javascript">
+	//给html再套标签就是document
+//查
+//	就是页面中只有一个，但是因为它拿出来的是一个类数组，
+//	所以都具体的用还是要加下标
+	var div = document.getElementsByTagName('div')[];
+	//类数组
+	var div = document.getElementById('demo')
+	.getElementsByTagName(''); //标签名
+	.getElementsByName();  //需要注意，只有部分标签name可生效（表单img,iframe)
+	document.getElementByClassName('')//类名 ——》ie8和ie8以下的ie版本中没有
+	document.querySelector() //css选择器，ie7及以下版本中没有
+	.querySelectorAll() css选择器
+
+	query:查询
+	selector：选择器
+documents.querySelector()
+	documents.querySelector('div > span strong'); 
+	//css里面怎么选就怎么选，选出来的是一个
+	documents.querySelectorAll();选择的是一组
+	但很少用，是静态的，不是实时的
+
+
+
+//节点
+//	遍历节点树
+//		.prrentNode() -> 父节点，最顶端的为#document
+//		childNodes() ->  子节点们
+//		firstChild -> 第一个子节点
+//		lastChild  -> 最后一个子节点
+//		nextsibling -> 后一个兄弟节点
+//		previousSibling -> 前一个兄弟节点 
+//		sibling [ˈsɪblɪŋ；兄弟姐妹
+//		previous  [ˈpri:viəs] ：以前的
+	//节点的类型
+	//	1.元素节点 -1 
+	//	2.属性节点 -2
+	//	3.文本节点 -3
+	//	4.注释节点  -8
+	//	5.document  -9
+	//	6.DocumentFragemt  -11
+	//	
+//	基于元素节点树的遍历
+	// .parentElement() -> 返回当前元素的父元素节点（ie不兼容）
+	// children 只返回当前元素的子节点  -- 除了这个，其他的都是IE9不支持
+	// node.childElementCount === node.children.length
+	// firstElementChild  返回的是第一个元素节点（ie不兼容）
+	// lastElementChild   返回的是最后一个元素节点（ie不兼容）
+	// nextElementSibling/previousElementSibling 
+	// 返回后一个/前一个兄弟元素节点
+	
+// 	节点的四个属性
+	// nodeName  元素的标签名 以大写形式表示，只读
+	// nodeBalue  Text节点Comment（注释）节点的文本内容，可读写
+	// nodeType   该节点的类型， 只读
+	// attributes  Element节点的属性集合
+	//document 和 Document不一样
+
+Document,是一个大的构造函数， 但是不能new， 但有原型prototype
+原型链document的构造函数式HTMLDocument
+document --> HTMLDocument.prototype --> Document.prototype
+增 document.createElement('p'); //增加元素节点， 写啥里面就是啥
+   document.createTextNode('创建文本节点')
+   document.createComment('创建注释节点')
+
+ 插入
+ 	ParentNOde.appendChild();  //任何元素都有，剪切操作
+ 	ParentNOde.insertBefore(a, b); 
+ 	//在ParentNode的子元素中的b之前插入a,insert a, Before b
+删
+	parsent.removeChild(span)；	//他杀  
+	.remove();  //自尽
+替换
+	parentNode.replaceChild(new, origin);
+
+Element节点的一些属性
+	innerHTML
+	innerText(火狐不兼容)/textContent(老版本IE不好使)； 可写可读
+Elenent节点的一些方法
+	.setAttribute('属性类型如class'， '属性名')
+	.getAttrobute();  //得到属性值
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
+

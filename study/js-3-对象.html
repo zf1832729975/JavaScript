@@ -1,0 +1,136 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+
+	<script type="text/javascript">
+		
+		//对象里面的函数叫方法，
+		//this,对象里面方法里面的This，可以代表自己，第一人称的
+		//删除对象属性，delete 对象.属性，直接访问对象的
+		//属性（没有存在，没有这个属性），不会报错，结果是undefined
+
+		//对象的创建方法,在外面赋值要用=，不能用：
+		//1.var obj = {} plainObject 对象字面/对象直接量
+		//2.构造函数，大驼峰式命名规则，首字母大写，其他的函数遵循小驼峰，
+		// 	1),系统自带构造函数 Object(),每个都一样，但它们彼此独立
+		// 	var obj = new Object();
+		// 	2), 自定义
+		// 	
+		// 	
+		var person = {
+			name : "zhou",
+			age : 18,
+			sex : "male"
+		}
+
+		//对象用 ","  函数用 ";"
+
+		function Car(color){
+			// var this = {};这是隐式的
+			this.color = color;
+			this.name = "BMW";
+			this.height = "1400";
+			this.lang = "4900";
+			this.weight = 1000;
+			this.health = 100;
+			this.run = function () {
+				this.health --;
+			}
+			//return this; 也是隐式的
+		}
+
+	// 构造函数的内部原理
+		// 1.在函数的最前面隐式加上this. = {}
+		// 2.执行 this.xxx = xxx;
+		// 3.隐式返回this
+
+		var car1 = new Car('red'); //这是两个相互独立的
+		var car2 = new Car('green');
+
+
+		// 模拟的new 构造函数, 但更深层次的模拟不了，
+		function Person(name, height) {
+			var that = {}; //return 和var其实是系统隐式的的
+			that.name = name;
+			that.height = height;
+			return that;
+		}
+		var person1 = Person('xiaowang', 180);
+		var person2 = Person('xiaoli', 175);
+
+	// 可以通过new新建对象，
+	// var num = new Number(123);对象才有属性和方法
+
+
+	//包装类
+	var num = 4;
+	num.len = 3;
+	//  new Number(4).len = 3;; delete
+	// 下次在赋值之后自动销毁，下次就没有了
+	// 因为隐式
+
+	var str = 'abcd';
+	str.length = 2;
+	//new String('abcd').length = 2; delete;
+	//console.log(str);//str还是abcd; 
+	//字符串的length每次都是调用的，
+	//
+	// 
+	
+	var str =  'abc';
+	str += 1;
+	var test = typeof(str);
+	if(test.length == 6) {
+		test.sign = 'typeof的返回结果可能为String';
+	}
+	console.log('不是对象没有属性，为他加了属性也不行' + test.sign);
+
+
+	function strLength(str){
+		var count, len; 
+		count = len = str.length;
+		for(var i = 0; i < len; i ++){
+			if(str.charCodeAt(i) > 255){
+				count ++;
+			}
+		}
+		return count;
+	}	
+
+	console.log('求字符串的长度' + strLength('求string的长度'));
+
+
+
+	//原始值没有属性和方法，可以通过包装类来创建，
+	//但创建了之后马上又销毁了，字符串有固有的.length,
+	//var num = 3;
+	//num.len = 3
+	//new Number(4).len = 3;  - > delete
+	//
+	//new Number(4)
+
+
+	</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,271 @@
+	<!-- 克隆，三目运算符，数组，类数组 -->
+	<!-- 日期：2018-8-6 -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type='text/javascript'>
+//克隆
+	
+	var obj = {
+		name : "abc",
+		age : 1,
+		card : ['visa', 'master'],
+		wife : {
+			name : 'bcd',
+			son : {
+				name : 'aaa',
+			}
+		}
+	}
+
+	// 1.判断是不是原始值	
+	// 2.判断是数组还是对象		toString 
+	// 3.建立相应的数组或对象
+
+	function deepClone(origin, target) {
+		var target = target || {},
+			toStr = Object.prototype.toString,
+			arrStr = "[object Array]";
+		for(var prop in origin) {
+			if(origin.hasOwProperty(prop)) {
+				if(origin[prop] !== 'null' && typeof(origin[prop]) == 'object') {
+					if(toStr.call(origin[prop]) == arrStr) {
+						target[prop] = [];
+					}else{
+						target[prop] = {};
+					}
+					deepClone(origin[prop], target[prop]);
+				}else{
+					target[prop] = origin[prop];
+				}
+			}
+		}
+		return target;
+	}		
+
+//三目运算符
+	var num = 1 > 0 ? 2 + 2 : 1 + 1;
+
+//数组
+//
+	//数组构造方法
+
+	// var arr = []; 还可以 arr = [,,];  表示有三个，数组长度为3
+	// var arr = new Array();
+	// 唯一区别
+	// 这两种方法只有这种不一样，var arr = new Array(10),
+	// 表示arr数组的长度为10，每位都为undefined,
+	// 而var arr = [10]表示这个数组的就一位，值为10
+
+	// var arr = new Array(10.2)会报错，数组的长度不行
+
+	// 数组读和写
+		// arr[num] 没有num这个下标都不会报错，放回值undefined
+		// arr[num] = xxx  可以溢出写
+	//es3.0  es5.0  es6.0
+	//ECMAScript  DOM  BOM
+	
+//数组常用方法
+//改变原数组
+//		splice : 剪接
+//		shift : 改变，去掉
+//		concat : 合并数组
+//		join : 连接
+//		reverse : 逆转
+//		split : 分裂
+//		slice : 切成片，切下
+//	
+//	
+数组
+	不可改变
+	concat join   .toString 
+	split  分裂
+   	slice  切下
+
+  改变数组的方法
+  push, pop, unshift, shift, reverse, sort
+  	splice  剪接
+
+  	
+   	splice()  //从第几位开始，截取多少长度，在切口处添加
+ 	split();  // 以什么方法分开,拆分字符串
+  	slice()   // 从该位开始截取，截取到该位，不写全部截取
+
+		//push,pop,shift,unshift,sort,reverse,
+		//splice    切片，剪接
+	//不可变原数组
+		// concat, join --> split,toString,slice
+	// arr.pust(1,2,34,4)  可以同时加多个
+	  //push();
+		Array.prototype.push = function() {
+			for(var i = 0; i < arguments.length; i++) {
+				this[this.length] = arguments[i];
+				// 数组的长度能自动调整，我们不用加
+			}
+			return this.length;
+		}
+		var arr = [1, 2];
+	    //arr.unshift(-1, 3); 在数组的前面加
+	    //arr.shift();   在数组的前面减
+
+	    Array.prototype.unshift = function() {
+	    	var arr = arguments[]
+
+	    	arr.push(this);
+	    }
+
+
+	//  arr.reverse()，逆转
+		//  
+		// arr.splice(从第几位开始，截取多少长度，在切口处添加新的数据可以添加无穷个)
+		// var arr = [1, 2, 3, 5];
+		// arr.splice(3, 0, 4);
+		// 
+		// 数组可以有负数  倒数第几位
+	// splice = function (pos) {
+		// 		pos += pos > 0 ? 0 : this.length;
+		// }
+		// 
+	// sort() 排序，升序 直接写的话是比ASCII码
+		// 1.必须写两个形参
+		// 2.看返回值 1）当返回值为负数是，那么前面的数放在前面
+		// 			 2）为正数是，前面的数放后面，交换
+		// 			 3）为0，不动
+		// 
+		//  arr.sort(function(a, b){
+		//  	if(a > b) { 
+		//  		return a - b;
+		//  	}else{
+		//  		return a - b;
+		//  	}
+		//  	-->
+		//  	return a - b;  升序
+		//  	return b - a;  降序
+		//  });
+		// 
+		// 给一个有序的数组，乱序
+		// arr.sort(function(){
+		// 		return Math.random() - 0.5;
+		// });
+		// 
+		// 按照对象的年龄排序
+		// var arr = [obj1, obj2,...]
+		// arr.sort(function(a, b){
+		// 		return a.age - b.age;
+		// 	})
+		// 
+	//str.charCodeAt(i) > 255
+//不可变原数组
+		// concat, join --> split,toString,slice
+
+//		reverse : 逆转
+//		split : 分裂
+//		slice : 切成片，切下
+//	
+
+
+	// slice(从该位开始截取，截取到该位),不写就全部截取
+		// var arr = [1, 2, 3, 4, 5]
+		// arr.slice(1, 3);  == > [2, 3] ,-->[1, 3)
+	//str.join('连接字符串')，不写按逗号传
+		//只能是字符串，用来连接数组之间，全部的数组之间都有
+		//str.join('哦')，  =>  1哦2哦3哦4哦5哦 
+
+	//split('str') ,拆分字符串，按照str拆分成数组
+	//
+	// 散列
+
+	var str = 'alibaba';
+	var str1 = 'baidu';
+	var str2 = 'tencent';
+	var arr = [str, str1, str2];
+	arr.join("");
+
+
+//类数组  -- 数组和对象的属性都有
+	// arguments
+	var obj = {
+		"0" : 'a',
+		"1" : 'b',
+		"2" : 'c',
+		"length" : 3,
+		"push" : Array.prototype.push,
+		"splice" : Array.prototype.splice,
+	}
+	obj.push('e');
+	// 属性要为索引(数字)属性，必须有length属性，最好加上push
+	Array.prototype.push = function(target){
+		// this.obj --> this['obj']
+		this[this.length] = target;
+		this.length ++;
+	}
+//type  具体判断是什么类型 包括包装类的字符或者数字
+//	1.分两类  原始值  引用值
+	function type(target){
+		var template = {
+			"[object Array]" : "array",
+			"[object Object]" : "object",
+			"[object Boolean]" : "boolean - object",
+			"[object Number]" : "number - object",
+			"[object String]" : "string - object"
+		}
+		if(target == null) {
+			return "null";
+		}
+		if(typeof(target) == "object") {
+			return template[Object.prototype.toString.call(target)]
+
+		}else{
+			return tyepof(target);
+		}
+
+
+	}
+
+//数组去重
+	// //var arr = [0,0,0,0,1, 1, 1,2,2,3];
+	// Array.prototype.unique = function() {
+	// 	var arr = []
+	// 	for(var i = 0; i < arguments.length; i++) {
+	// 		for(var j = 0; j < arr.length; j++) {
+	// 			if(this[i] == arr[j]){
+	// 				break;
+	// 			}else if(j == arr.length - 1){
+	// 				arr.push(this[i]);
+	// 			}
+	// 		}
+	// 	}
+	// 	return arr;
+	// }
+
+	Array.prototype.unique = function() {
+		var temp = {},
+			arr = [],
+			len = this.length;
+		for(var i = 0; i < len; i ++) {
+			if(!temp[this[i]]) {
+				temp[this[i]] = 'a';
+				arr.push(this[i]);
+			}
+		}
+		return arr;
+	}
+
+
+	
+
+//	一旦经历了var的操作，所得出的属性，window,这种属性叫做不可配置的属性，不可配置的属性，  delete删除不掉, 而没有var 的变量 delete删除的了
+
+
+
+// obj.create(prototype, 特性)；
+
+
+
+</script>
+
+</body>
+</html>

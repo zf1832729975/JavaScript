@@ -1,0 +1,498 @@
+<!-- js原型， -->
+<!-- 日期：2018-7-22 -->
+
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type='text/javascript'>
+
+	// 原型（继承），prototype,proto(原始的)
+	// 1.定义：是function对象的一个属性，它定义了
+	// 构造函数制造出的对象的公共祖先。通过该构造函数产生的对象，
+	// 可以继承该原型的属性和方法。原型也是对象。
+	// 2.利用原型特点和概念，可以提取共有的属性
+	// 3.对象如何查看原型 --> 隐式属性 __proto__
+	// 4. --> constructor  构造器
+	
+	
+	function Person(){
+		// Person.prototype    --原型
+		// person.prototyp = {}   是祖先,是一个空对象，只要一new就有了
+	}
+	var person = new Person();
+
+	/*
+		最开始的写法，冗余度高
+
+	 function Car(color, owner){
+		this.ower = ower;
+		this.color = color;
+		this.height = 1400;
+		this.lang = 4900;
+		this.carName = 'BMW';
+	}*/
+
+	/*// 改良后的写法,基本的属性还是有的，通过继承
+	Car.prototype.height = 1400;
+	Car.prototype.lang = 4900;
+	Car.prototype.carName = 'BMW';*/
+	function Car(color, owner) {
+		this.color = color;
+		this.owner = owner;
+	}
+	// 再改良
+	Car.prototype = {
+		heigh:1400,
+		lang:4900,
+		carName:'BMW',
+	}
+/*	Car.prototype = {
+		constructor : Car(),  //构造器
+		__proto__　: Object,
+	}
+	
+*/
+	/* 
+	car 
+	Car{
+		color : 'red',
+		owner : 'zf',
+		__proto__ : {   // ---> __proto__ :Car.prototype
+			carName : 'BMw',
+			heigh : 4900,
+			lang : 4900,
+			__proto__ :　Object{...}
+		}
+	}
+*/
+
+
+
+
+
+//隐式属性__proto__
+	/*
+	
+	 var person = new Person(); 
+	  //直接new,Person里面有__proto__属性，隐式的，系统自带的
+	 function Person() {
+		其实真实的发生new了之后，会隐式的
+		var this = {
+			__proto__ : Person.prototype
+			__proto__ : 存的是对象的原型，指向了原型
+			//如果person.name没有这个属性，那么他就会
+			上__proto__里面去找，又去找 Person.prototype这个的属性
+		};
+	 }
+	person = {
+		__proto__ ： Object,
+		
+	}
+	//说明prototype上还有原型，形成了原型链
+	Person.prototype = {
+		constructor : Person(),
+		__proto__ : Object,
+	}
+
+
+
+
+	*/
+
+
+	// person.lastName = xxx；
+	// 这样不能更改原型的lastName，只能给自己增加一个属性
+	// 应该 Person.prototype.lastName = xxx;这样才能改
+	// 删除 delet person.name, delet Person.prototype.name;
+
+
+	// 系统给的属性, constructor : 构造函数
+	// car.constructor = Car();返回构造器
+	// 系统自给的属性，Car.prototyper{
+	// 		constructor : Car();
+	// 		__proto__ : Object;
+	// }
+
+
+	Person.prototype.name = 'sunny';
+	function Person() {
+		//var this = {__proto__ : Person.prototype}
+	}
+
+	var proson = new Person();
+	//Proson.prototype.name = 'cherry';
+	//这样person.name是cherry,这是在原有的基础上改
+	//，__proto__和Person.prototype指向了同一个空间了
+	Person.prototype = {
+		name : 'cherry'，//改房间了
+	}//现在person.name应该是sunny,没有改变，
+	//这种是直接改原型，原来的__proto__没有被改变
+
+	//var obj = {name : 'a'};
+	//var obj1 = obj;
+	//obj = {name : 'b'};
+	//obj1是a,obj是b,没有改变obj1
+
+
+	var obj = {};
+	var obj = new Object();
+	//以上这两种方法是相同的，所以在开发中都是用第一种
+
+//	var obj = object.creat(null);
+//	//这个不会继承制Object.__proto__
+
+//	只有undefined和null没有tostring
+
+	//Object.prototype.toString
+	//Number.prototype.toString
+	//Array.prototype.toString
+	//Boolen.prototype.toString
+	//String.prototype.toString
+	//
+
+	//document.write(obj);
+	//会调用这个对象的toString方法，打印出这个字符串
+
+// 	javascript求小数点的时候精度不准
+// 	toFixed(2);		//保留两位小数
+	
+	Math.ceil(123.234);  // = > 124
+	Math.floor(123.999); // = > 123
+	Math.random();		// = > 0 ~ 1 之间的随机小数
+	Math.floor(Math.random() * 100); // = > 0 ~ 99
+
+// call/apply  	改变this指向，区别，传参列表不同
+//  .call();
+//  
+//  	var obj = {};
+//  	Person.call(obj,); 
+//  	 第一位会把内部的this换成obj,第二位开始之后会当成正常的传参
+// 		call,改变内部函数的this，让Person的this改成obj
+// 		test()   --> test.call()
+
+//	实现代码的重写
+	function Person(name, age, sex) {
+		this.name = name;
+		this.age = age;
+		this.sex = sex;
+	}
+
+	function Studnet(name, age, sex, tel, grade) {
+		//var this = {name ...}
+		Person.call(this, name, age, sex);
+		this.tel = tel;
+		this.grade = grade;
+	}
+
+	var student = new Studnet('sunny', 123, 'male', 135,2017);
+
+
+//apply		call 需要把实参按照形参的个数传进去
+		//apply 需要传一个arguments, 传数组，其他的都一样
+		//
+
+		//Wheel.apply(this, [WheelSize,style]);
+
+
+//继承发展史，继承模式
+//
+	// 1.传统形式 --> 原型链
+	// 	过多的继承了没有的属性
+	// 2.借用构造函数
+	// 	不能继承借用的构造函数
+	// 	每次构造函数都要多走一个函数
+	// 3.共享原型
+	// 	不能随便改动自己的原型 -->改的话会把父级的原型链改了
+	// 4.圣杯模式
+
+	// 1.Grand.prototype.lastName...,
+	// 2.function Student (name, age, sex, grade){
+	// 	Person.call(this, name, age, sex)
+	// 	this.grade = grade;
+	// }
+	// 3.Father.prototype.lastName = 'zh';
+	// function Father(){
+
+	// };
+
+	// function Son(){
+
+	// }
+
+	Son.prototype = Father.prototype;
+	var son = new Son();
+
+	/*function inherit(Target, Origin) {
+		Target.prototype = Origin.prototype;
+	}//改Son的protype就会改Father的protype
+	inherit(Son, Father);
+	var son = new Son();
+	*/
+
+
+// 	4. function inherit(Target, Origin) {
+// 		function F() {};
+// 		F.prototype = Origin.prototype;  
+// 		Target.prototype = new F();
+// 	}
+// 	Father.prototype.lastName = 'zh';
+// 	function Father() {};
+// 	function Son() {};
+// 	var son = new Son ();
+// 	var father = new Father();
+
+// 4 --> function inherit(Target, Origin) {
+// 		function F() {};
+// 		F.prototype = Origin.prototype;  
+// 		Target.prototype = new F();
+
+// 		Target.prototype.constuctor = Target;
+// 		//.uber继承自谁 --> 最终的
+// 		Target.prototype.uber = Origin.prototype;
+// 	}
+// 	Father.prototype.lastName = 'zh';
+// 	function Father() {};
+// 	function Son() {};
+// 	var son = new Son();
+// 	var father = new Father();
+
+
+	var inherit = (function (){
+		var F = function () {};
+		return function (Target, Origin) {
+			function F() {};
+				F.prototype = Origin.prototype;  
+				Target.prototype = new F();
+				Target.prototype.constuctor = Target;	
+				Target.prototype.uber = Origin.prototype;
+		}
+
+	}());
+
+
+
+
+//闭包第三点作用，实现私有化
+	function Deng(name, wife){
+		var prepareWife = 'xiaozhang'; //变成了私有化变量
+
+		this.name = name;
+		this.wife = wife;
+		this.divorce = function (){
+			this.wife = prepareWife;
+		};
+		this.changePrepareWife = function(target) {
+			prepareWife = target;
+		};
+		this.sayPreparWife = function(){
+			console.log(prepareWife);
+		}
+	}
+
+
+//命名空间，解决命名冲突
+
+	// 用闭包解决,污染全局变量
+	var name = 'bcd';
+	var init = (function(){
+		var name = 'abc';
+		return function callName(){
+			console.log(name);
+			//解决了name和外边的name的命名冲突
+		}
+	}());
+	init();
+
+
+//实现方法的连续调用
+	var deng = {
+		smoke : function () {
+			console.log('Smoke,.....xuan cool!!');
+			//默认return undefined
+			return this;
+		},
+		drink : function () {
+			console.log('drink.....ye cool');
+			return this;
+		},
+		perm : function () {
+			console.log('preming... cool!!!');
+			return this;
+		}
+	}
+	deng.smoke().drink().perm().smoke();
+	//this.drink
+
+
+//属性拼接
+	//obj.name ---> obj['name'] 隐式发生，如果里面是[name],代表name是变量
+
+	var deng = {
+		wife1 : {name : 'xiaoliu'},
+		wife2 : {name : 'xiaozhang'},
+		wife3 : {name : 'xiaowang'},
+		sayWife : function (num) {
+			return this['wife' + num];
+		}
+	}
+
+//对象枚举，对象的遍历 enumeration 
+	var obj = {
+		name : '13',
+		age : 423,
+		sex : 'male',
+		height : 189,
+	}
+	for(var prop in obj) {
+		//console.log(obj.prop + ' ' + tyepof(prop));  这样访问的是obj有没有prop这个属性，输出肯定为undefined
+		//  ---> obj['prop'],这是访问prop这个属性
+		console.log(obj[prop]);//这样的话prop代表的是变量
+		//obj.hasOwnProperty(prop),判断prop是不是本身的原型
+	}
+	var obj1 = {
+		a : 123,
+		b : 234,
+		c : 243,
+	}
+
+	for(var key in obj1){
+		obj1.key ++;
+	}
+
+// in 
+//	'height' in obj 判断属性height是否在obj里面
+
+	//A instanceof B A对象是不是 B构造函数构造出来的
+	//看A对象的原型链上 有没有 B的原型
+
+
+
+
+//this
+	// 1.函数预编译过程中 	this --> window
+	// 2.全局作用域里 		this --> window
+	// 3.call/apply 可以改变函数运行时this指向
+	// 4.obj.func();func()里面的this指向obj，谁执行就指向谁
+
+	function Person(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+	function Student(name, age, sex) {
+		//var this = Object.create(Student.prototype);
+		Person.call(this, name, age);
+		this.sex = sex;
+	}
+
+
+	function test(c){
+		//var this = Object.create(test.prototype);
+		var a = 123;
+		function b () {} 
+	}
+	// AO {
+	// 	arguments : [1],
+	// 	this : window,  
+	// 	c : 1,
+	// 	a : undefined,
+	// 	b : function () {}
+	// }test(1);
+	new test();  //如果不new的话就指向window，那么执行的就是window的
+
+//this 练习题
+	var name = '222';
+	var a = {
+		name : '111',
+		say : function () {
+			console.log(this.name);
+		}
+	}
+	var fun = a.say;
+	fun();		// ==> 222
+	a.say();    // ==> 111
+
+	var b = {
+		name : '333',
+		say : function (fun) {
+			fun ();  //自个执行，指向window
+		}
+	}
+	b.say(a.say);	// ==> 222   ---> window.name
+	b.say = a.say;	
+	b.say();		// ==> 333   ---> b.name
+
+//arguments只有两个属性，length和callee
+// arguments.callee,指向函数自身引用,就相对于指向自己，
+// 代表自己本身的这个函数，用来实现立即执行函数的递归
+	 
+	 var num = (function (n){
+	 	if (n == 1) {
+	 		return 1;
+	 	}
+	 	return n * arguments.callee(n - 1);
+	 }(20));
+
+// caller 
+	function test () {
+		demo();
+	}
+	function demo() {
+		console.log(demo.caller);	// ==> test(){....}
+		//demo.caller,检查这个demo在哪个函数中被调用
+	}
+	test();
+
+
+	var foo = 123;
+	function print() {
+		this.foo = 234;
+		console.log(foo);
+	}
+	print();  // ==> 234,
+	new print();  // ==> 123,因为现在this有人了，this就不能指代window了，
+	// var this = Object.create(print.prototype);
+
+	var a = 5;
+	function test(){ 
+		//var this = {
+		//		__proto__ : test.prototype
+		//}
+		a = 0;
+		alert(a);	//0
+		alert(this.a); //undefined
+		var a;
+		alert(a);	//0
+	}
+	new test();
+
+	// AO{
+	// 	a : 0,
+	// 	this : {}
+	// }
+
+//克隆
+	
+	var obj = {
+		name : 'abc',
+		age : 13,
+		sex : 'female',
+	}
+	function clone(orin, target) {
+		var target = tartet || {};
+		for(var prop in origin) {
+			target[prop] = origin[prop];
+		}
+	}
+	clone(obj, obj1)
+
+
+
+
+
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JSON</title>
+</head>
+<body>
+	
+
+	JSON是一种传输数据的格式
+	（以对象为样板， 本质上就是对象， 但用途有区别， 对象是本地用的， json是用来传输的）
+
+	 JSON.parse(str); string --> json
+	 JSON.stringify(json); json --> string
+	
+	
+
+	1.domTree:过程是深度优先原则     
+	加载完一定在解析完, 异步发生
+	2.cssTree
+	domTree + cssTree = randerTree --> 开始渲染页面
+
+	js操作dom影响页面
+	尽量减少dom的添加和删除
+	reflow  重排/重构  dom节点的删除， 添加
+					dom节点的宽高变化， 位置变化
+					offsetWidth offsetLeft
+	repaint  重绘   只绘制一部分
+	
+异步加载js ,  js是单线程的
+	js下载完就执行
+	js加载的缺点： 加载工具方法没有必要阻塞文档 过得js加载会影响页面效率， 一旦网速不好， 那么整个网站将等待js加载而不进行后续渲染等工作。
+
+	有些工具方法需要按需加载， 用到在加载， 不用补加载
+javascript异步加载3种方式
+1.defer； 整个页面解析完毕才执行， ie才能用， 也可以将代码写在里面（变成异步的）
+2.aysnc : w3c标准方法，async只能加载外部脚本，asynchronous  不能把js写在script标签里
+	在执行时也不阻塞页面
+3.创建script， 插入到DOM中国， 加载完毕后callback， 
+
+	1.<script type="text/javascript" src="tools.js" defer='defer'></script>
+	2.<script type='text/javascript' src='tools.js' async="async"></script>
+
+	3.<script>
+		
+		var script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.scr = "tools.js";
+		document.head.appendChild(script);
+	</script>
+
+	<script>
+	script.onload = function() {
+		//确保js下载完之后才去执行Safari chrome firefox opera
+	}	
+	
+	script.onreadystatechange = function () {
+		//Ie  
+		if(script.readyState == "complete" || script.readyState == "loaded") {
+			//加载完之后执行的代码
+		}
+	}
+
+	</script>
+
+
+
+
+加载JavaScript
+
+	<script>
+	//1
+		function loadScript(src, callback) {
+			var script = document.createElement('script');
+			script.type = "text/javascript";
+			if(script.readyState) {
+				//ie
+				script.onreadystatechange = function() {
+					if(script.readyState == "complete" || script.readyState == "loaded") {
+						callback();
+					}
+				}
+			}else{
+				script.onload = function() {
+					callback();
+				}
+			}
+			script.src = src;
+			document.head.appendChild(script);
+		}		 
+
+		//loadScript('domo.js', test);这样会报错test还没有定义
+		loadScript('domo.js', function(){
+			test();
+		});
+	//2
+		function loadScript(src, callback) {
+			var script = document.createElement('script');
+			script.type = "text/javascript";
+			if(script.readyState) {
+				//ie
+				script.onreadystatechange = function() {
+					if(script.readyState == "complete" || script.readyState == "loaded") {
+						tools[callback]();
+					}
+				}
+			}else{
+				script.onload = function() {
+					tools[callback]();
+				}
+			}
+			script.src = src;  //兼容ie
+			document.head.appendChild(script);
+		}		 
+
+		//loadScript('domo.js', test);这样会报错test还没有定义
+		loadScript('domo.js', "test");
+
+
+	</script>
+
+
+
+js加载时间线
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+

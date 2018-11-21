@@ -1,0 +1,130 @@
+<!-- js中常用的工具方法 -->
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>js工具方法</title>
+</head>
+<body>
+<p>Clone-深度克隆</p>
+<script type="text/javascript">
+	function deepClone(origin, target) {
+		var target = target || {},
+			toStr = Object.prototype.toString,
+			arrStr = "[object Array]";
+		for(var prop in origin) {
+			if(origin.hasOwProperty(prop)) {
+				if(origin[prop] !== 'null' && typeof(origin[prop]) == 'object') {
+					if(toStr.call(origin[prop]) == arrStr) {
+						target[prop] = [];
+					}else{
+						target[prop] = {};
+					}
+					deepClone(origin[prop], target[prop]);
+				}else{
+					target[prop] = origin[prop];
+				}
+			}
+		}
+		return target;
+	}		
+</script>
+<p>保留到外部执行，打印次序</p>
+<script type="text/javascript">
+	function test(){
+			var arr = [];
+			for(var i = 0; i < 10; i ++){
+				(function(j){
+					arr[j] = function(){
+						document.write(j + " ");
+					}
+				}(i))
+			}
+			return arr;
+		}
+		var myArr = test();
+		for(var j = 0; j < 10; j ++){
+			myArr[j]();
+		}	
+</script>
+<p>inheit-继承，</p>
+<script type="text/javascript">
+	 function inherit(Target, Origin) {
+		function F() {};
+		F.prototype = Origin.prototype;  
+		Target.prototype = new F();
+
+		Target.prototype.constuctor = Target;
+		//.uber继承自谁 --> 最终的
+		Target.prototype.uber = Origin.prototype;
+	}
+</script>
+<p>type-判断target具体的类型</p>
+<script type="text/javascript">
+	function type(target){
+		var ret = typeof(target)
+		var template = {
+			"[object Array]" : "array",
+			"[object Object]" : "object",
+			"[object Boolean]" : "boolean - object",
+			"[object Number]" : "number - object",
+			"[object String]" : "string - object"
+		}
+		if(target == null) {
+			return "null";
+		}
+		else if(ret == "object") {
+			return template[Object.prototype.toString.call(target)]
+
+		}else{
+			return ret
+		}
+	}
+</script>
+<p>unique-数组去重</p>
+<script type="text/javascript">
+	Array.prototype.unique = function() {
+		var temp = {},
+			arr = [],
+			len = this.length;
+		for(var i = 0; i < len; i ++) {
+			if(!temp[this[i]]) {
+				temp[this[i]] = 'a';
+				arr.push(this[i]);
+			}
+		}
+		return arr;
+	}
+</script>
+<p>strUnique-字符串去重</p>
+<script>
+	 function strUnique(str) {
+ 	var arr = str.split('');
+	var temp = {},
+		reArr = [],
+		len = arr.length;
+	for(var i = 0; i < len; i ++) {
+		if(!temp[arr[i]]) {
+			temp[arr[i]] = 'a';
+			reArr.push(arr[i]);
+		}
+	}
+	return reArr.join('');
+ }
+
+function getScrollOffer(){
+		//求滚动条的位置
+		if(window.pageXOffset){
+			x : window.pageXOffset;
+			y : window.pageYOffset;
+		}else{
+			return{
+				x : document.body.scrollLeft + document.documentElement.scrollLeft,
+				y : document.body.scrollTop + document.documentElement.scrollTop;
+			}
+		}
+	}
+</script>
+</body>
+</html>

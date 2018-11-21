@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>日期对象</title>
+</head>
+<body>
+	<script>
+/*		//日期对象， 是系统提供好的
+		//var date = new Dete();  //获取的是系统当前的时间
+		//Date对象的方法
+		//date.getDate(); 返回一个月中的某一天
+		//date.getDay(); 0~6 一个星期的第几天， 星期天是第0天
+		//date.getYear();日期6进制80.01.01 得到的是6进制
+		//date.getFullYear();
+		//date.getTime(); 1970.1.1到现在的毫秒
+		//date.getHours();
+		//其他的set一样的
+
+	定时器，都是window上的对象
+		var firstTime = new Date().getTime();
+		for(var i = 0; i < 100000000; i++){};
+		var lastTime = new Date().getTime();
+		document.write(lastTime - firstTime);
+		setInterval(function(){
+
+		}, 1000);// 定时器，每隔1000毫秒执行一次，一直循环，
+		var timer = setInterval(function(){
+
+		}, time); //time不会改变，就算你time变量改了都没有用
+		clearInterval(timer);//清除定时器
+		setTimeout(funtion(){}, 1000); //多少毫秒才执行
+		clearTimeout(timer);
+//获取DOM尺寸，css脚本化
+//滚动条
+	window.pageYOffset;
+	window.pageXOffset;
+	ie8及以下不兼容,用以下方法,其中一个有另一个就为零， 不知道那个好使
+	document.body.scrollLeft/Top();
+	docuent.documentElement.scrollLeft/Top
+	function getScrollOffer(){
+		//求滚动条的位置
+		if(window.pageXOffset){
+			x : window.pageXOffset;
+			y : window.pageYOffset;
+		}else{
+			return{
+				x : document.body.scrollLeft + document.documentElement.scrollLeft,
+				y : document.body.scrollTop + document.documentElement.scrollTop;
+			}
+		}
+	}
+
+// //查看视口的尺寸
+// 	window.innerWidth/innerHeight
+// 	ie8及以下不兼容用
+	
+// 	两种渲染模式
+// 	1.怪异模式/混杂模式， 向下兼容document.body.clientWidth/clientHeight;
+// 	2.标准模式 <！DOCTYPE html>document.documentElement.clientWidth/clientHeight;
+// 	通过comptMode看是什么模式BackCompat向下兼容
+	
+// 	查看元素的几何
+// 	domEle.getBoundingClientRect();
+// 	返回left,top,bottom,right; height; width;返回的结果不是实时的
+
+// 	查看元素的尺寸
+// 	.offsetWidth/Height()
+// 	dom.offsetLeft,dom.offsetTop
+// 	
+// 	让滚动条滚动
+// 	window.scroll/scrollTo(x, y); 相对于文档的距离
+// 	window.scrollBy(x, y);累加滚动距离
+
+
+*/
+
+// 阅读器功能
+	var key = true;
+	start.onclick = function() {
+		if(key){
+			timer = setInterval(funtion(){
+				window.scrollBy(0, 10);
+			}, 100);
+			key = false;
+		}
+		
+	}
+	stop.onlick = function() { 
+		clearInterval(timer);
+		key = true;
+	}
+	
+//脚本化css, 间接改变css在js中要把-变成小驼峰式
+//	backgroundColor='white'
+//	div.style.width;   显示的都是行间样式
+//	碰到float尽量改成cssFloat
+//	写入的值必须字符串形式， 只有.style才可写， 其他的都是可读不可写
+//	查询计算样式
+	// window.getComputedStyle(div, null); 获取样式值，
+	// window.getComputedStyle(div, 'after');获取伪元素的唯一方法
+	//   这个获取的是所有的样式值， 而style获取的是设置的样式值（看的是行间的）
+	// 返回的是绝对值如em--> ?px;
+	// ie8及以下不兼容用
+		// div.currentStyle  ---> CSSStyleDeclaration;ie独有的
+  
+// 获取元素的样式
+
+  function getStyle(elem, prop) {
+  	if(window.getComputedStyle ){
+  		return window.tetComputedStyle(elem, null)[prop];
+  	}esle{
+  		return elem.currentStyle()[prop];
+  	}
+  }
+
+	</script>
+
+
+</body>
+</html>

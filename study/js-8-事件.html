@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!-- 2018-11-15 -->
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件</title>
+</head>
+<body>
+	<!-- 绑定事件1.onXXX兼容性好 ，句柄绑定方式，只能绑定一个 -->
+	<!-- 2.addEventListener('click', function(){}, false); 同一个函数可以绑定多个 -->
+	<!-- obj.attachEvent('on' + 事件类型， 函数)
+	div.attachEvent('onclick', function(){console.log(this)});IE独有
+		程序this指向window
+	div.attachEvent('onclick', function() {
+		handle.call(div);
+	})
+
+	function handle() {
+		//事件处理程序
+		//this.
+	}
+
+	//解除事件处理程序
+	ele.onclick = false/''/null;
+	ele.removeEventListener(type, fn, false);
+	ele.detachEvent('on' + type, fn)
+	注：若绑定匿名函数， 则无法解除
+
+ -->
+事件没有小驼峰式
+绑定事件
+
+	<ul>
+		<li>a</li>
+		<li>a</li>
+		<li>a</li>
+		<li>a</li>
+	</ul>
+
+	<script> 
+		var ulList = document.getElementsByTagName('li');
+		for(var i = 0; i < ulList.length; i ++){
+			(function(i){
+				ulList[i].addEventListener('click', function(){
+					console.log(i);
+				})
+			}(i))
+		}
+
+		//封装兼容性的addEvent(elem, type, handle)方法
+
+		function addEvent(elem, type, handle){
+			if(elem.addEventListener {
+				elem.addEventListener(type, handle, false);
+			}else if(elem.attachEvent){
+				elem.attachEvent('on' + type, function() {
+					handle.call(elem);
+				})
+			}else{
+				elem['on' + type] = handle;
+			}
+		}
+
+	</script>
+
+
+事件冒泡和捕获
+
+<!-- 事件冒泡addEventListener(type, fn, false)
+	结构上嵌套关系的元素， 会存在事件的冒泡的功能， 即同一事件， 自子元素冒泡向父元素。（自顶向下, 由我扩散）
+
+	事件捕获addEventListener(type, fn, true)，之后是执行
+		自父元素捕获至子元素（自顶向下，慢慢靠近我）
+	ie没有事件捕获
+
+	触发顺序（绑定几个函数的时候）， 先捕获， 后冒泡
+	focus, blur, change, submit, reset, select等事件不冒泡
+
+ -->
+取消冒泡
+
+<!-- 
+	div.onclick = fucntion (e) {  绑定事件函数只能有一个参数， 系统自动调用， 会把当前的事件对象一系列的传给e
+		console.log(e);
+	}
+	div.onclick = fucntion (e) {  
+		e.stopPropagation();取消冒泡；ie9及以下不支持
+		console.log(e);
+	}
+	ie独有 event.cancelBubble = true;
+	div.onclick = fucntion (e) {  
+		e.cancelBubble = true;
+		console.log(e);
+	}
+
+	封装取消冒泡的函数stopBubble(event)
+
+
+
+ -->
+封装取消冒泡的函数stopBubble(event)
+<script>
+	// div.onclick = function(e) {
+	// 	stopBubble(e);
+	// }
+	function stopBubble(event) {
+		if(event.stopPropagation) {
+			event.stopPropagation();
+		}else{
+			even.cancelBubble = true;
+		}
+	}
+</script>
+
+阻止默认事件
+<!-- 	默认事件， 表单提交， a标签跳转， 右键菜单等
+	右键， contextmenu,
+	onmouseover onmouseout
+	1.return false；以对象属性的方式注册的事件才有效
+		document.oncontextenu = function() {
+			console.log('a');
+			return false;
+		}
+	2.event.preventDefault(); w3c标志，ie9以下不兼容
+		document.oncontextenu = function(e) {
+			console.log('a');
+			e.preventDefault();
+		}
+	3.event.returnValue = false;兼容ie
+		document.oncontextenu = function(e) {
+			console.log('a');
+			e.returnValue = false;
+		}
+
+ -->
+封装阻止默认的事件的函数cancelHandler(event);
+<script>
+
+	document.oncontextenu = function(e) {
+			console.log('a');
+			cancelHandler(e);
+		}
+	
+	function cancelHandler(event) {
+		if(event.preventDefault) {
+			eventn.preventDefault();
+		}else{ 
+			event.returnValue = false;
+		}
+	}
+</script>
+失去a标签的功能
+<a href="javascript:void(false)">取消a标签的默认事件</a>
+<script>
+	var a = document.getElementsByTagName('a')[0];
+	a.onclick = function(){
+		return false;
+	}
+
+</script>
+
+<script>
+	// div.onclick = function(e) {
+	// 	//ie  --> window.event
+	// 	var event = e || window.event;
+	// }
+</script>
+事件源对象
+	<!-- event.target; 火狐只有这个
+	event.scrElement;  ie只有这个
+	chrome都有
+	
+	兼容写法
+	wrapper.onclick = function (e) {
+		var event = e || window.event;
+		var target = event.target || event.scrElement;
+	}
+
+
+	 -->
+
+事件委托， 和事件源对象进行处理
+优点
+	1.性能 不能需要循环所有的元素一个个的绑定事件
+	2.灵活 当有的新的子元素是不需要重新绑定事件
+<script>
+	var ul = document.getElementsByTagName('ul')[0];
+	ul.onclick = function (e) {
+		// var event = e || window.event;
+		// var target = event.target || event.scrElement;
+				console.log(target.innerText);
+	}
+</script>
+鼠标事件
+
+<div id="dv" style="width: 100px; height: 50px; background-color: red; position:absolute; top:0; left: 0; text-align: center;">点我呀！</div>
+<script>
+	var dv = document.getElementById('dv');
+	//drag(dv);
+	autoSlide(dv)
+	function drag(elem) {
+		var disX,
+			disY;
+		elem.onmousedown = function(e) {
+			disX = e.pageX - parseInt(elem.style.left);
+			//鼠标到方块的坐标
+			disY = e.pageY - parseInt(elem.style.top);
+			elem.onmousemove = function(e) {
+				var event = e || window.event;
+				elem.style.left = e.pageX - disX + "px";
+				elem.style.top = e.pageY - disY + "px";
+			}
+			elem.onmouseup = function() {
+				elem.onmousemove = null;
+			}
+		}
+	}
+	//自动滑动， 不让用户点击
+	function autoSlide(elem){
+		elem.onmousemove = function(e) {
+			if((e.pageX > parseInt(elem.style.left) && e.pageX < (parseInt(elem.style.left) + parseInt(elem.style.width))) &&  (e.pageY > parseInt(elem.style.top) && (e.pageY < parseInt(elem.style.top) + parseInt(elem.style.height)) )){
+				elem.style.left =   400 * Math.random()   + "px";
+				elem.style.top =  400 * Math.random()   + "px";
+			}
+
+		}
+	}
+	
+
+
+</script>
+判断左右键
+<script>
+	document.onmousedown = function(e) {
+		if(e.button == 2) {
+			console.log('right')
+		}else if(e.button == 0) {
+			console.log('left')
+		}else{
+			console.log('medium'); //e.button == 1
+		}
+	}
+</script>
+click事件只能监听左键
+
+移动端
+touch 触摸
+touchstart  touchmove touchend
+对应
+onmousedown  onmousemove onmouseup
+
+
+键盘事件
+	onkeypress 	 onkeydown  	onkeyup
+	
+onkeypress 事件会在键盘按键被按下并释放一个键时发生。 提示：与 onkeypress 事件的关联的事件发生次序: 
+onkeydown 
+onkeypress 
+onkeyup 注意： 在所有浏览器中 onkeypress 事件不是适用于所有按键(如： ALT, CTRL, SHIFT, ESC)。监听一个用户是否按下按键请使用 onkeydown 事件,所有浏览器都支持 onkeydown 事件。
+
+
+属性				描述
+onkeydown	某个键盘按键被按下。	2
+onkeypress	某个键盘按键被按下并松开。	2
+onkeyup	某个键盘按键被松开。
+onkeydown 与 onkeypress
+onkeydown 事件会在用户按下一个键盘按键时发生。
+onkeypress只能监测到字符， 还会返回ASCII码字符（charCode:）区分大小写
+String.fromCharCode(e.charCode)
+
+
+文本类事件
+	oninput 改变输入框的文本就触发
+	onchange  
+	onfoucus 聚焦
+	onblur  失去焦点
+	#424242 标准黑色
+ 
+ onscroll  
+ onload: 全部加载完了
+
+
+
+</body>
+</html>
