@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>"js闭包！"</title>
+</head>
+<body>
+	<script type="text/javascript">
+		
+	//作用域精解	
+		// [[scope]]:每个javascript函数都是一个对象，对象中
+		// 有些属性我们可以访问，但有些不可以，这些属性仅供
+		// javascript引擎存取，[[scope]]就是其中一个
+		// [[scope]]指的是执行期上下文，就是我们所说的作用域，
+		// 其中存储了运行期上下文的集合
+		//运行期上下文（AO）：当函数执行时，会创建一个称为执行期上
+		//下文的内部对象。一个执行期上下文定义了一个函数执行时的环境，
+		//函数每次执行时对应的执行上下文都是独一无二的，所有多次调用一
+		//个函数会导致创建多个执行上下文，当函数执行完毕，
+		//它所产生的执行上下文被销毁
+		//作用链，
+		//内部函数被保存到外部，这样就必须闭包
+		
+
+
+		
+		
+		 function test(){
+			//......
+		}//这是函数声明
+
+		/*function test(){
+			//....
+		}()*///,这样不行，会报错,这是属于函数声明
+
+		var test = function(){
+			console.log('a');
+		}();//这是函数表达式，能马上执行
+
+		var test = function(){
+			console.log('a');
+		};//这是函数表达式，但不能马上执行，
+		//只是赋予test一个函数体，里面的内容没有执行
+		
+		//表达式后面加()就能执行
+
+
+		function a(){
+			var num = 100;
+			function b(){
+				num ++;
+				console.log(num);
+			}
+			return b;  //把b函数保存到了全局了
+		}
+		var demo = a();
+		demo();
+		demo();
+		//解释， return b,aAO销毁了，而b的aAO,bAO还在，就可以修改num
+
+//立即执行函数，只被执行一次，执行完立即释放资源
+	//因为其他的函数执行完没有被释放，它的定义还在
+		//(function(){}())  ,这种好
+		//(function(){})()
+		var num = (function(a,b,c){
+			console.log(a + b + c);
+			var d = a + b + c * 2;
+			return d;
+		}(1,2,3))
+		/*function test(){
+			var arr = [];
+			for(var i = 0; i < 10; i ++){
+				arr[i] = function(){
+				//定义的函数不会马上执行，
+				//只会把函数体赋给arr[i]，里面的函数系统不会去执行
+					document.write(i + " ");
+				}
+			}
+			return arr;
+		}
+		var myArr = test();
+		for(var j = 0; j < 10; j ++){
+			myArr[j]();
+		}*/
+		//为什么打印的全部是10，arr[i] = 函数体，
+		//定义的函数没有执行，而在最后函数体外执行 ，用立即执行函数解决
+		function test(){
+			var arr = [];
+			for(var i = 0; i < 10; i ++){
+				(function(j){
+					arr[j] = function(){
+						document.write(j + " ");
+					}
+				}(i))
+			}
+			return arr;
+		}
+
+		var myArr = test();
+		for(var j = 0; j < 10; j ++){
+			myArr[j]();
+		}
+		//当内部函数被保存到外部时，将会生产闭包，闭包会导致原
+		//有的作用链不释放，造成内存泄漏，闭包实现公有变量
+//闭包的作用，实现公有变量（函数累加）,可以做缓存（存储结构），
+//可以实现封装，属性私有化，模块化开发，防止污染全局变量
+	
+	//只有表达式才能被执行符号执行
+	/*function test(){
+		var a = 123;
+	}();不能执行，这是函数定义，声明，所以不能执行*/
+
+	var test = function(){
+		console.log("这是函数表示式,加括号能立即执行");
+	}(); //能被
+
+	+ function test(){
+		console.log('a');
+	}();  //+-!都可以执行，要加括号才能立即执行，一个表示式被执行，
+	//那么它会忽略表达式的名字，如test之后再引用就会出现未定义
+	//括号里面的是表示式
+
+
+	</script>
+	
+</body>
+</html>
