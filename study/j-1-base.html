@@ -1,0 +1,355 @@
+<html>
+<head lang="zh-CN">
+<meta charset="UTF-8"/>
+<!-- <link type="text/css" rel="stylesheet" href=""> -->
+<title></title>
+<base target="_blank">
+</head>
+<body>
+
+
+	 //函数用 "="和";"  对象用逗号和冒号": ,"
+
+	<div>浏览器，1，市场份额，2，shell部分（外核部分）,内核部分，独立研发的内核
+	
+	内核部分
+		渲染引擎、
+		js引擎
+		其他模块
+		
+		2001年发布ie6，首次实现对js引擎的优化
+		2008年Google发布最新浏览器Chrome,它是采用优化的javascript引擎
+		，引擎代号V8，因能把js代码直接转化为机械码来执行，进而以速度快而闻名
+		
+		编译  c c++通篇翻译，生产特定文件在执行，快，不夸平台
+		java独特的，
+		解释  js,php看一行翻译一行，执行一行，慢，跨平台，带<>
+	js特点
+	1，解释性语言，看一行翻译一行，执行一行
+	2.单线程
+	3.ECMA标注，javaScript又称：ECMAScript,
+	
+	主流浏览器
+	IE   			trident
+	Chrome			webkit/blink
+	firefox			Gecko
+	Opera			presto
+	Safari			webkit
+	1.引入javascript
+	页面级
+	<script type="text/javascript">
+		document.write('hello world!');
+	</script>	
+	
+	2.外部js文件
+	<!-- <script type="text/javascript" src="路径"> -->
+	</script>	
+	
+	结构 行为 样式 相分离
+	html  js   css
+	声明都用 var;类型由值决定
+	
+	js动态语言
+	
+	
+	css/html不算是编程语言，没有变量，算是脚本语言
+
+	关键字，保留字（预留的,未来有可能要用）
+	原始值,不可改变的原始数据（栈数据）,stack;
+		number,boolean string undefined（没有赋值） null（占位）
+	引用值，互相拷贝拷贝的是地址heap(堆)，申请的房间还是在stack;
+		array object function ...date RegExp
+	
+错误，
+	1.低级错误（语法解析错误），如果通篇扫描的时候有错误一行都不会执行
+	2.逻辑错误，刚好执行到逻辑错误的地方，其在这个代码块中后面的就不会执行了
+	js语法错误会影响当前代码块，不会影响到其他代码块当中去
+
+	类型由值决定
+	
+	js运算符
+	+  数学运算，字符串链接
+		任何数据类型的加字符串等字符串
+	NaN不等于任何，包括自己
+	
+	对象的属性之间加的是"," 不是";"
+
+
+typeof操作符  能返回的值  typeof()/typeof 判断的类型
+	number string boolean object undefined function 
+
+返回object的有 {}，数组，对象，null
+
+**typeof返回的类型是字符串类型的
+
+
+都是6个
+数据类型  number string  boolean  object  null undefined
+typeof   number	string	boolean object 	undefined function
+boolean类型为false的 undefined unll NaN 0 false 空串	
+<br />js运行三部曲
+	<br />
+	先是通篇扫描，再是预编译
+一、预编译，函数声明整体提升，变量 声明提升
+	
+	（相当于变量声明在程序的最前面）
+	var num = 23; 
+	在声明是是var num; //123是遇到下面的语句之后才执行的
+	1.imply global暗示全局变量：即任何变量，
+	如果变量未经声明就赋值，此变量就为全局对象window所有
+	
+	window是一个对象,window就是全局
+	2.一切声明的全局变量，全是window的属性
+	
+	预编译执行四部曲，
+	1），局部的创建AO对象。active object，全局的创建GO（
+	global object == window）对象
+	2），找形参和变量的声明，将变作为AO属性名，值赋为undefined量和形参
+	3），将实参和形参的值相统一
+	4），在函数体里面找函数的声明，值赋予函数体
+	
+	全局是GO，局部是AO
+	</div>
+	
+
+
+	</body>
+
+	<script type="text/javascript">
+		
+	/*
+		prompt : 提示
+	var score = parseInt(window.prompt('input'));
+	 
+	 if(100 > score && score > 90){
+	//	document.write("可以啊");
+	// }else{
+		document.write("error");
+	// }
+	
+	*/
+	//typeof:一个类型
+	//var num = "2" + "1";
+	//console.log(typeof(num) + " ;" + num);
+		//Boolean()类型为false的值得只有，undefined,NaN,false,0,null,""(空串);
+	
+//类型转换，常用方法
+	var num = Number("123");
+	console.log(typeof(num) + ":" + num);
+
+  // undefined/字母字符 -> NaN
+
+	parseInt(num);//转化为整数，小数部分直接不要，没有四舍五入，
+	//只要不是数字或者数字字符，其他的全部转换都为NaN，以数字位开始看，看到非数字位
+	parseInt(string,radix);
+	parseFloat(string); //undefined和null没有toString()方法
+	x.toString(radix);
+	Boolean(string);
+	//Boolean()类型为false的值得只有，undefined,NaN,false,0,null,""(空串);
+	num = "b";
+	console.log(parseInt(num,16));
+	//radix:基数把十六进制数num转化为十进制数,只能写二到三十六进制
+	
+	parseFloat(num);
+	String(num);//转化为字符串
+	Boolean(num);//转化为布尔值
+	demo.toString(8);//转化为字符串位八进制，一般不用
+	
+//隐式转化,隐式的调用其他方法
+	//isNaN,++/--,+/-(一元正负)(类型),
+	//-*/%都是调用的Number(),转换了之后再和NaN比对;
+	// + 当两侧有一个是字符串调用的是String();
+	// < > <= >= 如果有数字则转化为数字比较，没有数字，有字符串，那就比较ASCII码
+	// == ,undefined == null;NaN不等于任何东西，包括自己
+	console.log(isNaN("abc"));  //是NaN，调用number() --> 'NaN'
+	console.log(isNaN(null)); //null -> 0 
+	console.log(isNaN(undefined));//undefined -> NaN 
+//isNaN是先进行转化为Number();再看是不是NaN;
+	var a = "123";
+	a ++;	// -> 也是转化为Number()再++;
+	
+	//不发生类型转换 === ;
+
+//变量未定义
+
+	//只有这一种情况，没有定义而不报错，typeof(a);其他的都要报错
+
+	//typeof(typeof(a); -> typeof("undefined") -> string
+	
+//函数
+	//声明function theFirstName(){};
+	//函数表达式，abc没有用
+	//1.命名函数表达式，test.name='abc'
+	var test = function abc(){
+		document.write('a');
+	}
+	//2.匿名函数表达式test.name='test' ---> 函数表达式
+	var test = function(){
+		document.write('a');
+	}//这点的执行还是要test(),是个表示式，
+	//3.参数，参数不能加var,传什么都可以，不限制类型
+	//4.形参和实参的个数可以不同，不会报错，arguments -- 实参列表
+	function test(a, b){}
+
+//不定参函数
+	//function sum(a,b){sum.length}
+	//任意数求和
+	function sum(){
+		//argumnets实参列表，出生的时候有几个就有几个，
+		//它两不一样的个数，之后不会增加，没有存在的就不会映射
+		// ** argumnets 和 形参一起变的，但他们不是同一个，相当于映射
+		//实参有几个arguments就有几个
+		//sum.length形参的个数
+		 var result = 0;
+		for(var i = 0; i < arguments.length; i++){
+			result += arguments[i];
+		}console.log(result);
+	}
+	sum(1,2,3,4,5,6,7,8,9,10);//实参
+	
+	alert(typeof(typeof(c)));
+	alert("undefined: "+ typeof(undefined));
+	alert("NaN ： "+ typeof(NaN));
+	alert("null " + typeof(null));
+	
+	function reverse(num){
+		var mod, negative = 0;
+		if(num < 0){negative = 1; num = - num;}
+		console.log("逆转： " );
+		while(num >= 10){
+			mod = num % 10;
+			num = (num - mod) / 10;
+			console.log( mod);
+		}
+		console.log(num);
+		if(negative) console.log("-");
+		
+	}
+	reverse(12530);
+
+		function reverse(num) {
+		var mod,
+			result = 0;
+		while(num != 0) {
+			mod = num % 10;
+			num = (num - mod) / 10;
+			result = result * 10 + mod;
+		}
+		return result;
+	}
+
+
+	
+	
+	//阶乘，递归
+	//递归特点，1，找规律，n! = n * (n - 1)!,2，找出口 1! = 1;
+	function jc(n){
+		if(n == 1) return 1;
+		return n * jc(n - 1);
+	}
+	//斐波那契
+	function fbnq(n){
+		if(n == 1 || n == 2) return 1;
+		return fbnq(n - 2) + fbnq(n - 1);
+	}
+	
+	
+	function toChineseUp(n){
+		switch(n){
+			case 0: return "零";
+			case 1:	return "一";
+			case 2:	return "二";
+			case 3:	return "三";
+			case 4:	return "四";
+			case 5: return "五";
+			case 6:	return "六";	
+		}
+	}
+	var input = parseInt(window.prompt('input'));
+	function putOutChineseUp(p){
+		var str = "";
+		var n = String(p);
+		for(var i = 0; i < n.length; i++){
+			str += toChineseUp(Number(n[i]));
+		}
+		document. write(n + " ：" + str);
+	
+	}
+	function digits(num){
+		switch(num){
+		
+		
+		}
+	
+	}
+	console.log(input);
+	putOutChineseUp(input);
+		
+	
+	
+	//(window.foo || (window.foo = 'bar')); window.foo返回undefined ，布尔值为false，执行第二句，
+	//先看的括号，
+	var foo;
+	console.log("var:" + window.foo);
+	console.log(Boolean(window.foo));
+	
+	
+	
+	
+	
+	</script>
+	
+	<!-- 一个元素在父元素正中 -->
+	<div style="width:100px;height:100px;border:1px solid black;position:relative;">	
+		<div style="width:50px;height:50px;background:red;position:absolute;
+		 left:50%;top:50%;margin-left:-25px;margin-top:-25px;"></div>
+	</div>
+	画三角形
+	<div style="width:0;height:0;
+border:50px solid white;border-left-color:red; 
+border-bottom-color:red;"
+	>
+		
+    </div>	
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
