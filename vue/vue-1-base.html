@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue.js</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- <script type="text/javascript" src="vue.js"></script> -->
+
+</head>
+<body>
+	
+	<div id="app">
+		<p>name: {{ name }}</p>
+		<p>greet: {{ greet("after")}}</p>
+		<a v-bind:href="website">www.baidu.com</a>
+		<input type="text" v-bind:value="name">
+		<p v-html='websiteTag'>{{ websiteTag }}</p>
+	</div>
+
+
+	<!-- 注意要在后面 -->
+	<script type="text/javascript">
+		new Vue({
+			el: "#app",
+			data: {
+				name: "zhoufei",
+				job: "web开发",
+				website: "https://www.baidu.com",
+				websiteTag: "<a href='https://www.baidu.com'>www.baidu.com标签</a>"
+			},
+			methods: {
+				greet: function(time) {
+					return "Good " + time + this.name + "!";
+				}
+			}
+		});
+		/**
+		 * el: element 需要获取的元素， 一定是HTML中的根容器元素
+		 * data: 用于数据的存储
+		 * methods: 用于存储各种方法
+		 * data-binding: 给属性绑定对应的值
+		*/
+	</script>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

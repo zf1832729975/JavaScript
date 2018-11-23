@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue.js</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<style type="text/css">
+		#canvas{
+			width: 400px;
+			margin: 10px;
+			padding: 200px;
+			text-align: center;
+			border: 1px solid black;
+
+		}
+	</style>
+</head>
+<body>
+	<div id="vue-app">
+		<!-- 事件修饰符 once, prevent, stop
+			注意点： v-on:click中间不能有空格
+		-->
+		<h1>Events</h1>
+		<button @click="add(1)">长一岁</button>
+		<button v-on:click.once="subtract(1)">减一岁(只能执行一次)</button>
+		<button @dblclick="add(10)">长十岁</button>
+		<button v-on:dblclick="subtract(10)">减十岁</button>
+		<!-- @和v-on:都可以都相同 -->
+		<p>This age is {{ age }}</p>
+		<!-- 阻止a标签的功能不让其跳转 -->
+		<a v-on:click.prevent="" href="https://www.baidu.com">www.baidu.com</a>
+		<div id="canvas" @mousemove="updateXY">
+			<p>offstXY: {{ offsetX }}, 	{{ offsetY }}</p>
+			<p>clentXY: {{ clientX }}, 	{{ clientY }}</p>
+			<p>pageXY: 	{{ pageX }}, 	{{ pageY }}</p>
+			<p>screenXY: {{ screenX }}, {{ screenY }}</p>
+			<span v-on:mousemove="stopMoving">stop Moving</span>
+			<span v-on:mousemove.stop="">stop Moving</span>
+			
+
+		</div>
+	</div>
+
+
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
